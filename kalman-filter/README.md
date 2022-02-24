@@ -34,7 +34,7 @@ Sigma_y = 50
 
 3. Set opp eit container objekt-struktur (og kall det for "KalmanFilter") som held matrisen `M` funne i punkt 1, samt forventning (vektor) og kovarians (square matrise) til ein prior, og variansen til avstandsmålingane `Sigma_y`.
 
-4. Ved å nytte dynamikkane funne i 1, samt vyrde kunnskapar om Kalman-filteret (likning 1 og 2 i KF likningssettet) kan vi skrive ein `predict()` funksjon som oppdaterer vår prior frå tid `t-1` til tid `t.
+4. Ved å nytte dynamikkane funne i 1, samt vyrde kunnskapar om Kalman-filteret (likning 1 og 2 i KF likningssettet) kan vi skrive ein `predict()` funksjon som oppdaterer vår prior frå tid `t-1` til tid `t`.
 
 5. Ved å nytte dei resterande Kalman-filter likningane, skriv in `update()` funksjon som kan assimilere informasjonen som den sindige mannen skrik ut ved tid `t` (data skal vere lese inn etter punkt 2), gitt at all tidlegare informasjon er assimilert.
 
