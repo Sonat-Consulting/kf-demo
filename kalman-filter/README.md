@@ -42,4 +42,4 @@ Sigma_y = 50
 
 7. Mot tid på x-aksen, plot prior ved tid `t`, posterior ved tid `t`, avlest datapunkt ved tid `t`, samt den sanne state til bilen ved tid `t` (kan finnast i filen `true_car_position.csv`)
 
-Dersom noko er uklart, skrik ut, eller sjå på [fast](https://github.com/Sonat-Consulting/kf-demo/blob/main/kalman-filter/kalman-filter.ipynb)
+Dersom noko er uklart, skrik ut, eller sjå på [fasit](https://github.com/Sonat-Consulting/kf-demo/blob/main/kalman-filter/kalman-filter.ipynb)
