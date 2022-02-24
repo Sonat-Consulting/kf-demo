@@ -5,10 +5,10 @@
 
 Den sindige mannen frå oppgåve 1 tek ei pause i bilkøyringa.
 Han observerer eit fly, med mykje dur og mange kanoner på. 
-Mannen tenkjer som so at han helst ikkje vil møte på flyet frå nabolandet i aust.
+Mannen tenkjer som so at han helst ikkje vil møte på flyet.
 Klok som han er lagar han difor følgjande modell for dynamikken til flyet:
 
-- Mannen følgjer `x=[distanse, hastigheit, høgd]` (distance, velocity, altitude) for ulike tidspunkt.
+- Mannen vil finne verdien til ein 3-dim state `x=[distanse, hastigheit, høgd]` (distance, velocity, altitude) for flyet ved ulike tidspunkt.
 - Frå standard fysikk har vi at rate of change for posisjon er eksakt lik hastigheiten
 - Flyet prøvar å få oveblikk, og flyg difor med konstant hastigheit. Likevel så er der støy som gjer at hastigheiten blir forstyrra med bittelitt kvit støy. Hastigheiten er difor til ein viss grad ein random walk.
 - Det same gjeld for høgd over havet: Den blir forsøkt haldt konstant, men grunna vind og luft-trykk etc. så blir denne også forstyrra av (Gaussisk) kvit støy.
@@ -36,6 +36,37 @@ Vår helt frydar seg! Ved å ta denne historiske detour innser han at han har al
     - `predict_response()` overskriv variant i `KalmanFilter` (returnerer normalt `y_pred = H @ x`) ved å
          1. sette `H` til Jacobianen evaluert i beste estimat: `mu`
          2. returnere `h`evaluert i beste estimat: `mu` 
+    
+    `KalmanFilter` klassen frå første oppgave kan gjerne nyttast:
+    ```
+    class KalmanFilter:
+        def __init__(self):
+            self.M = None
+            self.H = None
+            self.mu = None
+            self.Sigma = None
+            self.Sigma_y = None
+            self.Q = None
+            
+        def predict_response(self):
+            return self.H @ self.mu
+        
+        # KF assimilation
+        def update(self, y_t):
+            # Predict y to measure innovation
+            y_hat = self.predict_response()
+            # Calculate Kalman gain
+            K = self.Sigma @ self.H.T @ inv(self.H @ self.Sigma @ self.H.T + self.Sigma_y)
+            # Update belief
+            I = np.identity(self.mu.size)
+            self.mu = self.mu + K @ (y_t - y_hat)
+            self.Sigma = (I-K@self.H)@self.Sigma
+        
+        # time dynamics
+        def predict(self):
+            self.mu = self.M @ self.mu
+            self.Sigma = self.M @ self.Sigma @ self.M.T + self.Q
+    ```
 
 7. Initialiser ein instance av `ExtendedKalmanFilter` ved å nytte 
 ```
